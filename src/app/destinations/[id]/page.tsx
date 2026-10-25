@@ -1,5 +1,6 @@
 
-import EditDestinationDialog from "@/components/EditDestinationDialog";
+import DeleteDestinationDialog from "@/components/destination/DeleteDestinationDialog";
+import EditDestinationDialog from "@/components/destination/EditDestinationDialog";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -50,29 +51,10 @@ const DestinationDetailsPage = async ({
 
           {/* Edit and Cancel Buttons */}
           <div className="flex shrink-0 items-center gap-2">
-           
-           <EditDestinationDialog destination={destination} />
+            <EditDestinationDialog destination={destination} />
 
-            <Link
-              href="/destinations"
-              className="flex items-center gap-2 rounded-md border border-red-200 bg-white px-3 py-2 text-xs font-medium text-red-500 shadow-sm transition hover:bg-red-50 sm:px-4 sm:text-sm"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="14"
-                height="14"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="m18 6-12 12" />
-                <path d="m6 6 12 12" />
-              </svg>
-              Cancel
-            </Link>
+           <DeleteDestinationDialog id={id}
+           />
           </div>
         </div>
 

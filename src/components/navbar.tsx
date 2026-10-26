@@ -30,7 +30,7 @@ const navLinks = [
   { label: "Home", href: "/" },
   { label: "Destinations", href: "/destinations" },
   { label: "Add Destinations", href: "/add-destination" },
-  { label: "My Bookings", href: "/bookings" },
+  { label: "My Bookings", href: "/my-bookings" },
 ];
 
 type User = {

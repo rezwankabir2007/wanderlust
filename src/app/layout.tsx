@@ -4,6 +4,9 @@ import "./globals.css";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const josefinSans = Josefin_Sans({
  
   subsets: ["latin"],
@@ -30,6 +33,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="min-h-full flex flex-col">
         <Navbar />
         {children}
+
+  <ToastContainer
+    position="top-right"
+    autoClose={3000}
+  />
         <Footer />
         </body>
     </html>

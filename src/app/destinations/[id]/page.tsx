@@ -1,6 +1,7 @@
 
 import DeleteDestinationDialog from "@/components/destination/DeleteDestinationDialog";
 import EditDestinationDialog from "@/components/destination/EditDestinationDialog";
+import BookTripButton from "@/components/booking/BookTripButton";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -36,7 +37,6 @@ const DestinationDetailsPage = async ({
   return (
     <main className="min-h-screen bg-[#f7f9fc] px-4 py-6 text-gray-900 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-6xl">
-
         {/* Top Navigation */}
         <div className="mb-5 flex items-center justify-between gap-3">
           <Link
@@ -49,12 +49,10 @@ const DestinationDetailsPage = async ({
             Back to Destinations
           </Link>
 
-          {/* Edit and Cancel Buttons */}
+          {/* Edit and Delete Buttons */}
           <div className="flex shrink-0 items-center gap-2">
             <EditDestinationDialog destination={destination} />
-
-           <DeleteDestinationDialog id={id}
-           />
+            <DeleteDestinationDialog id={id} />
           </div>
         </div>
 
@@ -90,19 +88,15 @@ const DestinationDetailsPage = async ({
 
         {/* Main Content */}
         <div className="mt-7 grid items-start gap-7 lg:grid-cols-3">
-
           {/* Left Content */}
           <div className="space-y-7 lg:col-span-2">
-
             {/* Quick Information */}
             <section className="grid grid-cols-2 gap-3 sm:grid-cols-3">
               <div className="rounded-xl border border-gray-100 bg-white p-4 shadow-sm">
                 <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-cyan-50 text-lg">
                   🌍
                 </div>
-                <p className="text-xs text-gray-500">
-                  Destination
-                </p>
+                <p className="text-xs text-gray-500">Destination</p>
                 <p className="mt-1 font-semibold">
                   {destination.country}
                 </p>
@@ -112,9 +106,7 @@ const DestinationDetailsPage = async ({
                 <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-orange-50 text-lg">
                   🗓️
                 </div>
-                <p className="text-xs text-gray-500">
-                  Trip Duration
-                </p>
+                <p className="text-xs text-gray-500">Trip Duration</p>
                 <p className="mt-1 font-semibold">
                   {destination.duration}
                 </p>
@@ -124,9 +116,7 @@ const DestinationDetailsPage = async ({
                 <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 text-lg">
                   ✈️
                 </div>
-                <p className="text-xs text-gray-500">
-                  Departure Date
-                </p>
+                <p className="text-xs text-gray-500">Departure Date</p>
                 <p className="mt-1 font-semibold">
                   {destination.departureDate}
                 </p>
@@ -137,9 +127,7 @@ const DestinationDetailsPage = async ({
             <section className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm sm:p-7">
               <div className="mb-5 flex items-center gap-3">
                 <div className="h-8 w-1 rounded-full bg-cyan-500" />
-                <h2 className="text-xl font-bold">
-                  Overview
-                </h2>
+                <h2 className="text-xl font-bold">Overview</h2>
               </div>
 
               <p className="text-sm leading-7 text-gray-600 sm:text-base">
@@ -155,36 +143,28 @@ const DestinationDetailsPage = async ({
 
               <div className="divide-y divide-gray-100">
                 <div className="flex items-center justify-between gap-4 py-4">
-                  <span className="text-sm text-gray-500">
-                    Country
-                  </span>
+                  <span className="text-sm text-gray-500">Country</span>
                   <span className="text-right text-sm font-semibold">
                     {destination.country}
                   </span>
                 </div>
 
                 <div className="flex items-center justify-between gap-4 py-4">
-                  <span className="text-sm text-gray-500">
-                    Category
-                  </span>
+                  <span className="text-sm text-gray-500">Category</span>
                   <span className="text-right text-sm font-semibold">
                     {destination.category}
                   </span>
                 </div>
 
                 <div className="flex items-center justify-between gap-4 py-4">
-                  <span className="text-sm text-gray-500">
-                    Duration
-                  </span>
+                  <span className="text-sm text-gray-500">Duration</span>
                   <span className="text-right text-sm font-semibold">
                     {destination.duration}
                   </span>
                 </div>
 
                 <div className="flex items-center justify-between gap-4 py-4">
-                  <span className="text-sm text-gray-500">
-                    Departure
-                  </span>
+                  <span className="text-sm text-gray-500">Departure</span>
                   <span className="text-right text-sm font-semibold">
                     {destination.departureDate}
                   </span>
@@ -196,7 +176,7 @@ const DestinationDetailsPage = async ({
           {/* Booking Card */}
           <aside className="lg:sticky lg:top-6">
             <div className="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-lg shadow-gray-200/50">
-
+              {/* Price Section */}
               <div className="bg-gradient-to-r from-cyan-600 to-blue-600 p-5 text-white">
                 <p className="text-sm text-white/80">
                   Your next adventure starts here
@@ -212,11 +192,10 @@ const DestinationDetailsPage = async ({
                   Price per person
                 </p>
               </div>
+              {/* End Price Section */}
 
               <div className="p-5 sm:p-6">
-                <h3 className="text-lg font-bold">
-                  Trip Summary
-                </h3>
+                <h3 className="text-lg font-bold">Trip Summary</h3>
 
                 <div className="mt-5 space-y-4">
                   <div className="flex items-start gap-3">
@@ -224,9 +203,7 @@ const DestinationDetailsPage = async ({
                       📍
                     </span>
                     <div>
-                      <p className="text-xs text-gray-500">
-                        Destination
-                      </p>
+                      <p className="text-xs text-gray-500">Destination</p>
                       <p className="mt-1 text-sm font-semibold">
                         {destination.country}
                       </p>
@@ -238,9 +215,7 @@ const DestinationDetailsPage = async ({
                       🗓️
                     </span>
                     <div>
-                      <p className="text-xs text-gray-500">
-                        Departure Date
-                      </p>
+                      <p className="text-xs text-gray-500">Departure Date</p>
                       <p className="mt-1 text-sm font-semibold">
                         {destination.departureDate}
                       </p>
@@ -252,9 +227,7 @@ const DestinationDetailsPage = async ({
                       ⏱️
                     </span>
                     <div>
-                      <p className="text-xs text-gray-500">
-                        Duration
-                      </p>
+                      <p className="text-xs text-gray-500">Duration</p>
                       <p className="mt-1 text-sm font-semibold">
                         {destination.duration}
                       </p>
@@ -262,12 +235,8 @@ const DestinationDetailsPage = async ({
                   </div>
                 </div>
 
-                <button
-                  type="button"
-                  className="mt-7 w-full rounded-xl bg-cyan-600 px-5 py-3.5 text-sm font-semibold text-white shadow-md shadow-cyan-600/20 transition duration-200 hover:-translate-y-0.5 hover:bg-cyan-700 hover:shadow-lg"
-                >
-                  Book This Trip <span className="ml-1">→</span>
-                </button>
+                {/* Booking Component */}
+                <BookTripButton destination={destination} />
 
                 <p className="mt-4 text-center text-xs leading-5 text-gray-400">
                   Explore new places and make unforgettable memories.

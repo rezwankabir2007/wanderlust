@@ -13,6 +13,16 @@ export const auth = betterAuth({
   emailAndPassword: { 
     enabled: true, 
   },
+  // 🟢 ১. সিক্রেট কি নিশ্চিত করুন (Vercel env থেকে নিবে)
+  secret: process.env.BETTER_AUTH_SECRET,
+  
+  // 🟢 ২. ফ্রন্টএন্ড এবং ব্যাকএন্ড ডোমেইনগুলোকে ট্রাস্টেড অরিজিন হিসেবে এলাউ করুন
+  trustedOrigins: [
+    "https://wanderlust-fontend.vercel.app",
+    "http://localhost:3000",
+    "http://localhost:5173"
+  ],
+  
   plugins: [jwt()],
   session: {
     strategy: "jwt",

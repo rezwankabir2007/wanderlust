@@ -4,6 +4,7 @@ import Link from "next/link";
 type Destination = {
   _id: string;
   name: string;
+  country:string;
   imageUrl: string; // 👈 ১. image এর জায়গায় imageUrl দেওয়া হয়েছে
   price: number;
   rating: number;
@@ -11,7 +12,7 @@ type Destination = {
 };
 
 const AllDestinationPage = async () => {
-  const res = await fetch("http://localhost:8000/destinations", {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/destinations`, {
     cache: "no-store", // 👈 ডেটা আপডেট সাথে সাথে পাওয়ার জন্য
   });
   const data: Destination[] = await res.json();
@@ -45,7 +46,7 @@ const AllDestinationPage = async () => {
             </div>
 
             <p className="text-xs text-gray-500 mt-2">
-              Nepal
+              {destination.country}
             </p>
 
             <div className="flex justify-between">

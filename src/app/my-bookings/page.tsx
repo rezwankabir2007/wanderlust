@@ -50,7 +50,7 @@ const MyBookingPage = async () => {
   }
 
  const handleCancleBooking = async (booking: Booking) => {
-   const res = await fetch(`http://localhost:8000/my-bookings/${booking._id}`)
+   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/my-bookings/${booking._id}`)
  }
 
   return (

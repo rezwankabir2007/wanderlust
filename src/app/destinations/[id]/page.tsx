@@ -1,9 +1,13 @@
-
 import DeleteDestinationDialog from "@/components/destination/DeleteDestinationDialog";
 import EditDestinationDialog from "@/components/destination/EditDestinationDialog";
 import BookTripButton from "@/components/booking/BookTripButton";
 import Image from "next/image";
 import Link from "next/link";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
+import { getTokenFromServer } from "@/lib/getTokenFromServer";
+
+export const dynamic = "force-dynamic";
 
 interface Destination {
   _id: string;
@@ -24,12 +28,27 @@ const DestinationDetailsPage = async ({
 }) => {
   const { id } = await params;
 
+
+  // Fetch token securely
+
+  const tokenString = await getTokenFromServer()
+
+  // Send request with Bearer authorization header
   const res = await fetch(
-    `http://localhost:8000/destination/${id}`
+    `${process.env.NEXT_PUBLIC_API_URL}/destination/${id}`,
+    {
+      headers: {
+        authorization: tokenString ? `Bearer ${tokenString}` : "",
+      },
+      cache: "no-store",
+    }
   );
 
   if (!res.ok) {
-    throw new Error("Failed to fetch destination");
+    const errorText = await res.text();
+    console.error("Backend Error Status:", res.status);
+    console.error("Backend Error Message:", errorText);
+    throw new Error(`Failed to fetch destination: ${res.status} ${errorText}`);
   }
 
   const destination: Destination = await res.json();
@@ -37,7 +56,6 @@ const DestinationDetailsPage = async ({
   return (
     <main className="min-h-screen bg-[#f7f9fc] px-4 py-6 text-gray-900 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-6xl">
-        {/* Top Navigation */}
         <div className="mb-5 flex items-center justify-between gap-3">
           <Link
             href="/destinations"
@@ -49,14 +67,12 @@ const DestinationDetailsPage = async ({
             Back to Destinations
           </Link>
 
-          {/* Edit and Delete Buttons */}
           <div className="flex shrink-0 items-center gap-2">
             <EditDestinationDialog destination={destination} />
             <DeleteDestinationDialog id={id} />
           </div>
         </div>
 
-        {/* Hero Image */}
         <section className="relative h-[280px] overflow-hidden rounded-2xl bg-gray-200 shadow-sm sm:h-[380px] lg:h-[440px]">
           <Image
             src={destination.imageUrl}
@@ -86,11 +102,8 @@ const DestinationDetailsPage = async ({
           </div>
         </section>
 
-        {/* Main Content */}
         <div className="mt-7 grid items-start gap-7 lg:grid-cols-3">
-          {/* Left Content */}
           <div className="space-y-7 lg:col-span-2">
-            {/* Quick Information */}
             <section className="grid grid-cols-2 gap-3 sm:grid-cols-3">
               <div className="rounded-xl border border-gray-100 bg-white p-4 shadow-sm">
                 <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-cyan-50 text-lg">
@@ -123,7 +136,6 @@ const DestinationDetailsPage = async ({
               </div>
             </section>
 
-            {/* Overview */}
             <section className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm sm:p-7">
               <div className="mb-5 flex items-center gap-3">
                 <div className="h-8 w-1 rounded-full bg-cyan-500" />
@@ -135,7 +147,6 @@ const DestinationDetailsPage = async ({
               </p>
             </section>
 
-            {/* Trip Information */}
             <section className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm sm:p-7">
               <h2 className="mb-5 text-xl font-bold">
                 Trip Information
@@ -173,10 +184,8 @@ const DestinationDetailsPage = async ({
             </section>
           </div>
 
-          {/* Booking Card */}
           <aside className="lg:sticky lg:top-6">
             <div className="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-lg shadow-gray-200/50">
-              {/* Price Section */}
               <div className="bg-gradient-to-r from-cyan-600 to-blue-600 p-5 text-white">
                 <p className="text-sm text-white/80">
                   Your next adventure starts here
@@ -192,7 +201,6 @@ const DestinationDetailsPage = async ({
                   Price per person
                 </p>
               </div>
-              {/* End Price Section */}
 
               <div className="p-5 sm:p-6">
                 <h3 className="text-lg font-bold">Trip Summary</h3>
@@ -235,7 +243,6 @@ const DestinationDetailsPage = async ({
                   </div>
                 </div>
 
-                {/* Booking Component */}
                 <BookTripButton destination={destination} />
 
                 <p className="mt-4 text-center text-xs leading-5 text-gray-400">
@@ -263,7 +270,6 @@ const DestinationDetailsPage = async ({
           </aside>
         </div>
 
-        {/* Bottom Navigation */}
         <div className="mt-8 border-t border-gray-200 py-6">
           <Link
             href="/destinations"

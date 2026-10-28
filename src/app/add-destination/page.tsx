@@ -16,6 +16,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
+import { authClient } from "@/lib/auth-client";
 
 const categories = [
   "Beach",
@@ -60,28 +61,37 @@ export default function AddDestinationPage(){
     setForm(initialForm)
   }
 
+  
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
+  event.preventDefault();
 
-    const res = await fetch('http://localhost:8000/add-destination', {
+  try {
+    // Better Auth ক্লায়েন্ট সেশন থেকে কুকি পাস করা
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/add-destination`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json", // Note: fixed header key from Content_Type to Content-Type
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(form)
-    })
-    const data = await res.json()
-    console.log(data)
+    });
 
-    const stored = localStorage.getItem("wanderlast-packages")
-    const packages: Array<PackageForm & { id: string }> = stored
-      ? JSON.parse(stored)
-      : []
-    packages.push({ id: crypto.randomUUID(), ...form })
-    localStorage.setItem("wanderlast-packages", JSON.stringify(packages))
+    // যদি ৪০১ আসে তবে ফ্রন্টএন্ড বুঝতে পারবে ইউজার লগইন নেই বা টোকেন ইস্যু
+    if (!res.ok) {
+      const errorText = await res.text();
+      console.error("Backend response error:", errorText);
+      alert("Failed to add destination. Status: " + res.status);
+      return;
+    }
 
-    router.push("/")
+    const result = await res.json();
+    console.log("Success:", result);
+
+    router.push("/");
+  } catch (error) {
+    console.error("Fetch error:", error);
   }
+}
+
 
   return (
     <div className="px-6 py-10">
@@ -117,15 +127,13 @@ export default function AddDestinationPage(){
                 <div className="space-y-1.5">
                   <Label htmlFor="category">Category</Label>
                   <Select
-                    value={form.category ? form.category : null}
+                    value={form.category ? form.category : undefined}
                     onValueChange={(value) =>
                       update("category", String(value ?? ""))
                     }
                   >
                     <SelectTrigger id="category" className="h-10 w-full">
-                      <SelectValue>
-                        {(value: string | null) => value ?? "Beach"}
-                      </SelectValue>
+                      <SelectValue placeholder="Select category" />
                     </SelectTrigger>
                     <SelectContent>
                       {categories.map((category) => (
